@@ -97,17 +97,53 @@ long LinuxParser::UpTime() {
   }
 
 // TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { return 0; }
+long LinuxParser::Jiffies() { 
+  string value = "", cpu = "", user = "", nice = "", system = "", idle = "", iowait = "",
+         irq = "", softIrq = "", steal = "", guest = "", guestNice = "";  
+  std::ifstream stream(kProcDirectory + kStatFilename);
+  if (stream.is_open()) {
+    std::getline(stream, value);
+    std::istringstream linestream(value);
+    linestream >> cpu >> user >> nice >> system >> idle >> iowait >>
+    irq >> softIrq >> steal >> guest >> guestNice;
+  } 
+  return (std::stol(user)+std::stol(nice)+std::stol(system)+std::stol(irq)+
+          std::stol(softIrq)+std::stol(steal)+std::stol(guest)+std::stol(guestNice)
+          +std::stol(idle)+std::stol(iowait));
+}
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
 
 // TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
+long LinuxParser::ActiveJiffies() { 
+  string value = "", cpu = "", user = "", nice = "", system = "", idle = "", iowait = "",
+         irq = "", softIrq = "", steal = "", guest = "", guestNice = "";  
+  std::ifstream stream(kProcDirectory + kStatFilename);
+  if (stream.is_open()) {
+    std::getline(stream, value);
+    std::istringstream linestream(value);
+    linestream >> cpu >> user >> nice >> system >> idle >> iowait >>
+    softIrq >> irq >> steal >> guest >> guestNice;
+  } 
+  return (std::stol(user)+std::stol(nice)+std::stol(system)+std::stol(irq)+
+          std::stol(softIrq)+std::stol(steal)+std::stol(guest)+std::stol(guestNice));
+}
 
 // TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+long LinuxParser::IdleJiffies() { 
+  string value = "", cpu = "", user = "", nice = "", system = "", idle = "", iowait = "",
+         irq = "", softIrq = "", steal = "", guest = "", guestNice = "";  
+  std::ifstream stream(kProcDirectory + kStatFilename);
+  if (stream.is_open()) {
+    std::getline(stream, value);
+    std::istringstream linestream(value);
+    linestream >> cpu >> user >> nice >> system >> idle >> iowait >>
+    softIrq >> irq >> steal >> guest >> guestNice;
+  } 
+  return (std::stol(idle)+std::stol(iowait));
+}
 
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { return {}; }
